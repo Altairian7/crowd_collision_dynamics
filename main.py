@@ -16,6 +16,7 @@ B2_velocity = float(input("Enter velocity of Block 2 (e.g., 0): "))
 game.font.init()
 font = game.font.Font(None, 48)
 desc_font = game.font.Font(None, 28)
+small_font = game.font.Font(None, 22)
 screen = game.display.set_mode(screen_size)
 tick_sound = game.mixer.Sound("tick.wav")
 screen.set_alpha(None)
@@ -25,9 +26,6 @@ running = True
 dt = 0
 collision = 0
 white = (255, 255, 255)
-
-# Remove right wall bounce
-infinite_collision = False  # Change this to False to disable right wall collision
 
 # Block classes
 class B1:
@@ -55,27 +53,32 @@ while running:
     distance = B1.x - (B2.x + B2.size)
     screen.fill("black")
 
-    # Display info
-    text_surface = font.render("Collision : " + str("{:,}".format(collision)), True, white)
-    distance_text = font.render("Distance : " + str("{:,}".format(int(distance))), True, white)
-    b1_mass = desc_font.render(str("{:,}".format(B1.m)) + " kg", True, white)
-    b1_velocity = desc_font.render(str(round(B1.v1, 10)) + " px/s", True, white)
-    b2_mass = desc_font.render(str("{:,}".format(B2.m)) + " kg", True, white)
-    b2_velocity = desc_font.render(str(round(B2.v1, 10)) + " px/s", True, white)
+    # Display info panel
+    screen.blit(font.render("Collisions: " + str(collision), True, white), (50, 30))
+    screen.blit(font.render("Distance: " + str(int(distance)) + " px", True, white), (50, 80))
 
-    screen.blit(text_surface, (50, 50))
-    screen.blit(distance_text, (50, 100))
-    screen.blit(b1_mass, (B1.x, B1.y - 50))
-    screen.blit(b2_mass, (B2.x, B2.y - 50))
-    screen.blit(b1_velocity, (B1.x, B1.y - 25))
-    screen.blit(b2_velocity, (B2.x, B2.y - 25))
+    # Block 1 Info (Big Block)
+    screen.blit(desc_font.render("Block 1 (Big):", True, white), (50, 150))
+    screen.blit(small_font.render("Mass: " + str(B1.m) + " kg", True, white), (60, 180))
+    screen.blit(small_font.render("Velocity: " + str(round(B1.v1, 3)) + " px/s", True, white), (60, 210))
+    screen.blit(small_font.render("Momentum: " + str(round(B1.m * B1.v1, 3)) + " kg·px/s", True, white), (60, 240))
+    screen.blit(small_font.render("KE: " + str(round(0.5 * B1.m * B1.v1**2, 3)) + " J", True, white), (60, 270))
+    screen.blit(small_font.render("X-Position: " + str(round(B1.x, 2)) + " px", True, white), (60, 300))
+
+    # Block 2 Info (Small Block)
+    screen.blit(desc_font.render("Block 2 (Small):", True, white), (50, 350))
+    screen.blit(small_font.render("Mass: " + str(B2.m) + " kg", True, white), (60, 380))
+    screen.blit(small_font.render("Velocity: " + str(round(B2.v1, 3)) + " px/s", True, white), (60, 410))
+    screen.blit(small_font.render("Momentum: " + str(round(B2.m * B2.v1, 3)) + " kg·px/s", True, white), (60, 440))
+    screen.blit(small_font.render("KE: " + str(round(0.5 * B2.m * B2.v1**2, 3)) + " J", True, white), (60, 470))
+    screen.blit(small_font.render("X-Position: " + str(round(B2.x, 2)) + " px", True, white), (60, 500))
 
     # Draw blocks
     game.draw.rect(screen, white, game.Rect(B1.x, B1.y, B1.size, B1.size))
     game.draw.rect(screen, white, game.Rect(B2.x, B2.y, B2.size, B2.size))
     game.draw.line(screen, (0, 255, 0), (0, B1.y + B1.size), (screen_size[0], B1.y + B1.size), 5)
 
-    # High-speed convergence hack
+    # Fast-forward convergence hack
     while abs(B2.v1) > 20000:
         if ((B2.x + B2.size) >= B1.x) and (B1.v1 <= B2.v1):
             collision += 1
@@ -103,13 +106,6 @@ while running:
         collision += 1
         game.mixer.Sound.play(tick_sound)
         B2.v1 *= -1
-
-    # Commented out right wall collision
-    # elif (B1.x + B1.size >= screen_size[0]) and (B1.v1 > 0):
-    #     if infinite_collision:
-    #         collision += 1
-    #         game.mixer.Sound.play(tick_sound)
-    #         B1.v1 *= -1
 
     # Update positions
     B1.x += B1.v1 * dt
