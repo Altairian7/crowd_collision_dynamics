@@ -1,6 +1,7 @@
 import pygame as game
 
 
+
 def init_game():
     game.init()
     game.font.init()
@@ -22,6 +23,7 @@ def get_user_input():
 
 
 
+
 class Block:
     def __init__(self, mass, velocity, size, x, y):
         self.m = mass
@@ -30,3 +32,11 @@ class Block:
         self.size = size
         self.x = x
         self.y = y
+        
+    
+def handle_collision(B1, B2):
+    """ Handle collision between two blocks. """
+    B1.v2 = (((B1.m * B1.v1) + (B2.m * B2.v1)) - (B2.m * (B1.v1 - B2.v1))) / (B1.m + B2.m)
+    B2.v2 = B1.v2 + (B1.v1 - B2.v1)
+    B1.v1 = B1.v2
+    B2.v1 = B2.v2
