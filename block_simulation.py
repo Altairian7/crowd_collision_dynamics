@@ -74,3 +74,66 @@ def draw_info(screen, fonts, B1, B2, collision, distance):
     game.draw.rect(screen, white, game.Rect(B2.x, B2.y, B2.size, B2.size))
     game.draw.line(screen, (0, 255, 0), (0, B1.y + B1.size), (screen.get_width(), B1.y + B1.size), 5)
 
+
+
+
+
+def main():
+    screen, screen_size = init_game()
+    font, desc_font, small_font, tick_sound = load_resources()
+    fonts = (font, desc_font, small_font)
+    white = (255, 255, 255)
+
+    B1_mass, B1_velocity, B2_mass, B2_velocity = get_user_input()
+
+    # Create Block objects
+    B1 = Block(B1_mass, B1_velocity, 200, screen_size[0] * 0.65, screen_size[1] * 0.5)
+    B2 = Block(B2_mass, B2_velocity, 100, screen_size[0] * 0.4, screen_size[1] * 0.5 + 100)
+
+    clock = game.time.Clock()
+    collision = 0
+    running = True
+    dt = 0
+
+    while running:
+        for event in game.event.get():
+            if event.type == game.QUIT:
+                running = False
+
+        distance = B1.x - (B2.x + B2.size)
+
+        # Fast-forward edge case: high initial speed
+        while abs(B2.v1) > 20000:
+            if ((B2.x + B2.size) >= B1.x) and (B1.v1 <= B2.v1):
+                collision += 1
+                handle_collision(B1, B2)
+            elif (B2.x <= 0) and (B2.v1 < 0):
+                collision += 1
+                B2.v1 *= -1
+
+            B1.x += B1.v1 * dt
+            B2.x += B2.v1 * dt
+
+        # Handle regular collisions
+        if ((B2.x + B2.size) >= B1.x) and (B1.v1 <= B2.v1):
+            collision += 1
+            game.mixer.Sound.play(tick_sound)
+            handle_collision(B1, B2)
+
+        elif (B2.x <= 0) and (B2.v1 < 0):
+            collision += 1
+            game.mixer.Sound.play(tick_sound)
+            B2.v1 *= -1
+
+        # Update positions
+        B1.x += B1.v1 * dt
+        B2.x += B2.v1 * dt
+
+        draw_info(screen, fonts, B1, B2, collision, distance)
+        game.display.flip()
+        dt = clock.tick(120) / 1000  # cap at 120 FPS
+
+    game.quit()
+
+if __name__ == "__main__":
+    main()
