@@ -19,3 +19,14 @@ def get_user_input():
     B2_mass = float(input("Enter mass of Block 2 (small block): "))
     B2_velocity = float(input("Enter velocity of Block 2 (e.g., 0): "))
     return B1_mass, B1_velocity, B2_mass, B2_velocity
+
+
+
+class Block:
+    def __init__(self, mass, velocity, size, x, y):
+        self.m = mass
+        self.v1 = velocity
+        self.v2 = 0
+        self.size = size
+        self.x = x
+        self.y = y
