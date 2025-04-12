@@ -44,6 +44,10 @@ class B2:
     x = screen_size[0] * 0.4
     y = screen_size[1] * 0.5 + (B1.size - 100)
 
+
+
+
+
 # Game loop
 while running:
     for event in game.event.get():
@@ -115,3 +119,5 @@ while running:
     dt = clock.tick(100000000) / 1000
 
 game.quit()
+
+
