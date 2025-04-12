@@ -40,3 +40,37 @@ def handle_collision(B1, B2):
     B2.v2 = B1.v2 + (B1.v1 - B2.v1)
     B1.v1 = B1.v2
     B2.v1 = B2.v2
+
+
+
+
+def draw_info(screen, fonts, B1, B2, collision, distance):
+    font, desc_font, small_font = fonts
+    white = (255, 255, 255)
+    screen.fill("black")
+
+    # Display statistics
+    screen.blit(font.render(f"Collisions: {collision}", True, white), (50, 30))
+    screen.blit(font.render(f"Distance: {int(distance)} px", True, white), (50, 80))
+
+    # Block 1 Info
+    screen.blit(desc_font.render("Block 1 (Big):", True, white), (50, 150))
+    screen.blit(small_font.render(f"Mass: {B1.m} kg", True, white), (60, 180))
+    screen.blit(small_font.render(f"Velocity: {round(B1.v1, 3)} px/s", True, white), (60, 210))
+    screen.blit(small_font.render(f"Momentum: {round(B1.m * B1.v1, 3)} kg·px/s", True, white), (60, 240))
+    screen.blit(small_font.render(f"KE: {round(0.5 * B1.m * B1.v1**2, 3)} J", True, white), (60, 270))
+    screen.blit(small_font.render(f"X-Position: {round(B1.x, 2)} px", True, white), (60, 300))
+
+    # Block 2 Info
+    screen.blit(desc_font.render("Block 2 (Small):", True, white), (50, 350))
+    screen.blit(small_font.render(f"Mass: {B2.m} kg", True, white), (60, 380))
+    screen.blit(small_font.render(f"Velocity: {round(B2.v1, 3)} px/s", True, white), (60, 410))
+    screen.blit(small_font.render(f"Momentum: {round(B2.m * B2.v1, 3)} kg·px/s", True, white), (60, 440))
+    screen.blit(small_font.render(f"KE: {round(0.5 * B2.m * B2.v1**2, 3)} J", True, white), (60, 470))
+    screen.blit(small_font.render(f"X-Position: {round(B2.x, 2)} px", True, white), (60, 500))
+
+    # Draw blocks
+    game.draw.rect(screen, white, game.Rect(B1.x, B1.y, B1.size, B1.size))
+    game.draw.rect(screen, white, game.Rect(B2.x, B2.y, B2.size, B2.size))
+    game.draw.line(screen, (0, 255, 0), (0, B1.y + B1.size), (screen.get_width(), B1.y + B1.size), 5)
+
