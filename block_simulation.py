@@ -111,6 +111,33 @@ def calculate_pi_approximation():
         return pi_approximation
     return None
 
+
+
+def draw_momentum_vectors():
+    """Draw arrows representing momentum vectors for each block."""
+    # Block 1 momentum vector
+    momentum_scale = 0.01  # Scale factor to make vectors visible
+    b1_momentum = B1.m * B1.v1 * momentum_scale
+    b1_start_pos = (B1.x + B1.size // 2, B1.y - 20)
+    b1_end_pos = (B1.x + B1.size // 2 + b1_momentum, B1.y - 20)
+    game.draw.line(screen, (255, 0, 0), b1_start_pos, b1_end_pos, 3)
+    # Add arrowhead
+    if B1.v1 != 0:
+        direction = 1 if B1.v1 > 0 else -1
+        game.draw.polygon(screen, (255, 0, 0), [
+            (b1_end_pos[0], b1_end_pos[1]),
+            (b1_end_pos[0] - direction * 10, b1_end_pos[1] - 5),
+            (b1_end_pos[0] - direction * 10, b1_end_pos[1] + 5)
+        ])
+    
+    # Block 2 momentum vector (similar implementation)
+    b2_momentum = B2.m * B2.v1 * momentum_scale
+    # ... (similar code for Block 2)
+    
+    
+    
+    
+    
 # Fonts and screen
 game.font.init()
 font = game.font.Font(None, 48)
