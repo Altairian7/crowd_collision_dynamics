@@ -20,7 +20,7 @@ This project simulates crowd dynamics using Python and HTML. It includes a Pytho
     ```bash
     python main.py
     ```
-g
+    
 ## Project Structure
 - `collision.html`: Visualizes crowd dynamics and collisions.
 - `main.py`: Backend logic for crowd simulation.
