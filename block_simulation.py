@@ -48,6 +48,20 @@ def predict_next_collision():
         return time_to_wall, "wall"
     else:
         return time_to_b1b2, "blocks"
+    
+    
+    
+    
+    
+def calculate_pi_approximation():
+    """For specific mass ratios, collision count approximates π - display this relationship."""
+    if abs(B1.m / B2.m - 100) < 0.1:  # Close to 100:1 ratio
+        pi_approximation = collision / 31.5  # Scale factor for 100:1 ratio
+        return pi_approximation
+    elif abs(B1.m / B2.m - 10000) < 10:  # Close to 10000:1 ratio
+        pi_approximation = collision / 314.2  # Scale factor for 10000:1 ratio
+        return pi_approximation
+    return None
 
 # Fonts and screen
 game.font.init()
