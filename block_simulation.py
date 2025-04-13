@@ -8,6 +8,14 @@ def calculate_energy_conservation():
     conservation_percentage = (current_energy / initial_energy) * 100
     return initial_energy, current_energy, conservation_percentage
 
+
+def calculate_collision_efficiency(pre_velocity1, pre_velocity2, post_velocity1, post_velocity2):
+    """Calculate and display the coefficient of restitution (efficiency) of collisions."""
+    if pre_velocity1 == pre_velocity2:  # Avoid division by zero
+        return 1.0
+    restitution = abs((post_velocity2 - post_velocity1) / (pre_velocity1 - pre_velocity2))
+    return min(restitution, 1.0)  # Cap at 1.0 for perfect collisions
+
 # Initialize pygame and get screen info
 game.init()
 info = game.display.Info()
