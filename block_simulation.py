@@ -84,7 +84,22 @@ def update_graph_data():
         for key in history_data:
             history_data[key] = history_data[key][-1000:]
             
-            
+        
+        
+def load_preset_scenario(scenario_name):
+    """Load preset interesting physics scenarios."""
+    scenarios = {
+        "pi_approximation": {"B1_mass": 100, "B1_velocity": 0, "B2_mass": 1, "B2_velocity": 10},
+        "perfect_transfer": {"B1_mass": 1, "B1_velocity": -5, "B2_mass": 1, "B2_velocity": 0},
+        "giant_mass": {"B1_mass": 10000, "B1_velocity": -2, "B2_mass": 1, "B2_velocity": 0},
+        "both_moving": {"B1_mass": 5, "B1_velocity": -3, "B2_mass": 2, "B2_velocity": 4},
+    }
+    
+    if scenario_name in scenarios:
+        return scenarios[scenario_name]
+    return None
+
+
     
 def calculate_pi_approximation():
     """For specific mass ratios, collision count approximates π - display this relationship."""
