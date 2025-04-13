@@ -50,8 +50,18 @@ def predict_next_collision():
         return time_to_b1b2, "blocks"
     
     
+
+def toggle_slow_motion():
+    """Allow users to toggle slow-motion to observe collisions better."""
+    global slow_motion, normal_speed
+    if slow_motion:
+        return normal_speed
+    else:
+        return normal_speed * 0.1    
     
     
+    
+
     
 def calculate_pi_approximation():
     """For specific mass ratios, collision count approximates π - display this relationship."""
