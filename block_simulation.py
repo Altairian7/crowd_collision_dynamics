@@ -28,6 +28,27 @@ B1_velocity = float(input("Enter velocity of Block 1 (e.g., -300): "))
 B2_mass = float(input("Enter mass of Block 2 (small block): "))
 B2_velocity = float(input("Enter velocity of Block 2 (e.g., 0): "))
 
+
+def predict_next_collision():
+    """Calculate and display the time until next collision and location."""
+    if B1.v1 == B2.v1:  # No collision if same velocity
+        return None, None
+        
+    # Time to collision between blocks
+    if B2.v1 < B1.v1:  # Block 2 will catch up to Block 1
+        time_to_b1b2 = distance / (B2.v1 - B1.v1) if B2.v1 != B1.v1 else float('inf')
+    else:
+        time_to_b1b2 = float('inf')
+    
+    # Time to wall collision
+    time_to_wall = -B2.x / B2.v1 if B2.v1 < 0 else float('inf')
+    
+    # Return the sooner collision
+    if time_to_wall < time_to_b1b2:
+        return time_to_wall, "wall"
+    else:
+        return time_to_b1b2, "blocks"
+
 # Fonts and screen
 game.font.init()
 font = game.font.Font(None, 48)
