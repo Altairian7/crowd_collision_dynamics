@@ -135,6 +135,39 @@ def draw_momentum_vectors():
     # ... (similar code for Block 2)
     
     
+def handle_interactive_controls():
+    """Add keyboard/mouse controls to adjust simulation parameters in real-time."""
+    keys = game.key.get_pressed()
+    
+    # Reset simulation
+    if keys[game.K_r]:
+        return True  # Signal to reset
+        
+    # Apply force to blocks
+    if keys[game.K_RIGHT]:
+        B1.v1 += 10 * dt
+    if keys[game.K_LEFT]:
+        B1.v1 -= 10 * dt
+    if keys[game.K_d]:
+        B2.v1 += 10 * dt
+    if keys[game.K_a]:
+        B2.v1 -= 10 * dt
+        
+    # Toggle gravity
+    if keys[game.K_g] and not prev_keys[game.K_g]:
+        return "toggle_gravity"
+        
+    # Adjust masses
+    if keys[game.K_1]:
+        B1.m *= 1.01  # Increase mass of block 1
+    if keys[game.K_2]:
+        B1.m /= 1.01  # Decrease mass of block 1
+    if keys[game.K_3]:
+        B2.m *= 1.01  # Increase mass of block 2
+    if keys[game.K_4]:
+        B2.m /= 1.01  # Decrease mass of block 2
+        
+    return False  # No reset required
     
     
     
