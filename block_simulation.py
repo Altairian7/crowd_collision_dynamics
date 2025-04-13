@@ -71,6 +71,20 @@ def adjust_collision_sound(relative_velocity):
     
     
 
+def update_graph_data():
+    """Collect and store data points for graphing speed, energy, etc. over time."""
+    history_data["time"].append(total_time)
+    history_data["b1_velocity"].append(B1.v1)
+    history_data["b2_velocity"].append(B2.v1)
+    history_data["collisions"].append(collision)
+    history_data["energy"].append(0.5 * B1.m * B1.v1**2 + 0.5 * B2.m * B2.v1**2)
+    
+    # Keep only the last 1000 data points
+    if len(history_data["time"]) > 1000:
+        for key in history_data:
+            history_data[key] = history_data[key][-1000:]
+            
+            
     
 def calculate_pi_approximation():
     """For specific mass ratios, collision count approximates π - display this relationship."""
