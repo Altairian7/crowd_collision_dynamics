@@ -60,6 +60,15 @@ def toggle_slow_motion():
         return normal_speed * 0.1    
     
     
+def adjust_collision_sound(relative_velocity):
+    """Scale the collision sound pitch based on relative impact velocity."""
+    # Faster collision = higher pitch
+    base_pitch = 1.0
+    pitch_scale = min(max(abs(relative_velocity) / 500, 0.5), 2.0)
+    tick_sound.set_volume(min(abs(relative_velocity) / 1000, 1.0))
+    # In a real implementation, you'd use pygame's sound.set_pitch() if available
+    return base_pitch * pitch_scale
+    
     
 
     
