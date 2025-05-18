@@ -46,7 +46,6 @@ class TuringMachine:
             self.state = 'HALT'
             return False, f"Step {self.step_count}: No transition for ({self.state}, {symbol}). Halting."
 
-
 class TuringGUI:
     def __init__(self, root):
         self.root = root
@@ -58,7 +57,6 @@ class TuringGUI:
         self.create_widgets()
 
     def create_widgets(self):
-        # Layout frames
         top_frame = tk.Frame(self.root)
         top_frame.pack(pady=5)
 
@@ -71,7 +69,6 @@ class TuringGUI:
         bottom_frame = tk.Frame(self.root)
         bottom_frame.pack()
 
-        # Tape input
         tk.Label(left_frame, text="🧾 Initial Tape:").pack()
         self.tape_entry = tk.Entry(left_frame, width=40)
         self.tape_entry.insert(0, "101+011")
@@ -85,7 +82,6 @@ q1 1 -> q1 1 R
 q1 # -> HALT # S""")
         self.transition_text.pack()
 
-        # Buttons
         control_frame = tk.Frame(left_frame)
         control_frame.pack(pady=5)
 
@@ -102,19 +98,16 @@ q1 # -> HALT # S""")
         self.speed_scale.set(500)
         self.speed_scale.pack(side=tk.LEFT)
 
-        # Explanation panel
         tk.Label(left_frame, text="📚 Explanation").pack()
         self.explain_text = tk.Text(left_frame, height=6, width=50, bg="#f0f0ff")
         self.explain_text.pack()
 
-        # Tape display
         self.tape_canvas = tk.Canvas(bottom_frame, width=800, height=80, bg="#f9f9f9")
         self.tape_canvas.pack(pady=10)
 
         self.state_label = tk.Label(bottom_frame, text="State: q0", font=("Arial", 14, "bold"))
         self.state_label.pack()
 
-        # Graph display
         tk.Label(right_frame, text="📊 State Graph").pack()
         self.graph_canvas = tk.Canvas(right_frame, width=400, height=300, bg="#ffffff")
         self.graph_canvas.pack()
@@ -152,7 +145,6 @@ q1 # -> HALT # S""")
         center_x, center_y = 200, 150
         positions = {}
 
-        # Draw state nodes
         for i, state in enumerate(states):
             x = center_x + radius * math.cos(i * angle_step)
             y = center_y + radius * math.sin(i * angle_step)
@@ -160,7 +152,6 @@ q1 # -> HALT # S""")
             self.graph_canvas.create_oval(x-20, y-20, x+20, y+20, fill="#cce5ff" if state != "HALT" else "#ffcccc")
             self.graph_canvas.create_text(x, y, text=state)
 
-        # Draw transitions
         for (s1, sym), (s2, _, _) in transitions.items():
             x1, y1 = positions[s1]
             x2, y2 = positions[s2]
@@ -223,17 +214,16 @@ q1 # -> HALT # S""")
             self.explain_text.insert(tk.END, explain + "\n")
             self.explain_text.see(tk.END)
 
+    def update_speed(self, val):
+        self.speed = int(val)
+
     def reset(self):
         if self.machine:
             self.machine.reset()
             self.draw_tape()
             self.explain_text.delete("1.0", tk.END)
-        self.auto_run = False
-        self.pause_button.config(text="⏸ Pause", state=tk.DISABLED)
-
-    def update_speed(self, val):
-        self.speed = int(val)
-
+            self.pause_button.config(state=tk.DISABLED, text="⏸ Pause")
+            self.auto_run = False
 
 if __name__ == "__main__":
     root = tk.Tk()
